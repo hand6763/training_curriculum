@@ -29,12 +29,30 @@ class CalendarsController < ApplicationController
 
     plans = Plan.where(date: @todays_date..@todays_date + 6)
 
+    # パターン①　もしもwday_numが7以上であれば、7を引く
+
+    # 7.times do |x|
+    #   today_plans = []
+    #   plan = plans.map do |plan|
+    #     today_plans.push(plan.plan) if plan.date == @todays_date + x
+    #   end
+    #   wday_num = Date.today.wday + x
+    #   if wday_num >= 7
+    #     wday_num = wday_num - 7
+    #   end
+    #   days = { :month => (@todays_date + x).month, :date => (@todays_date + x).day, :plans => today_plans, :wdays => wdays[wday_num] }
+    #   @week_days.push(days)
+    # end
+
+
+    # パターン②　「もしもwday_numが7以上であれば、7を引く」を考慮しない
+
     7.times do |x|
       today_plans = []
       plan = plans.map do |plan|
         today_plans.push(plan.plan) if plan.date == @todays_date + x
       end
-      days = { :month => (@todays_date + x).month, :date => (@todays_date+x).day, :plans => today_plans}
+      days = { :month => (@todays_date + x).month, :date => (@todays_date + x).day, :plans => today_plans, :wdays => wdays[(@todays_date + x).wday] }
       @week_days.push(days)
     end
 
